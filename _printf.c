@@ -1,65 +1,81 @@
 #include "main.h"
 
-void print_buffer(char buffer[], int *buff_ind);
 /**
- * _printf - Printf function
- * @format: format.
- * Return: Printed chars.
+ * _printf -  implements the printf function in c
+ * @format: first argument return by _printf
+ * Return: desired formated inputs from the _printf function to screen
  */
+
 int _printf(const char *format, ...)
 {
-	int i, printed = 0, printed_chars = 0;
-	int flags, width, precision, size, buff_ind = 0;
-	va_list list;
-	char buffer[BUFF_SIZE];
+	va_list va;
 
-	if (format == NULL)
-		return (-1);
+	va_start(va, format);
+	int result = _printfsub(format, va);
 
-	va_start(list, format);
+	va_end(va);
 
-	for (i = 0; format && format[i] != '\0'; i++)
-	{
-		if (format[i] != '%')
-		{
-			buffer[buff_ind++] = format[i];
-			if (buff_ind == BUFF_SIZE)
-				print_buffer(buffer, &buff_ind);
-			/* write(1, &format[i], 1);*/
-			printed_chars++;
-		}
-		else
-		{
-			print_buffer(buffer, &buff_ind);
-			flags = get_flags(format, &i);
-			width = get_width(format, &i, list);
-			precision = get_precision(format, &i, list);
-			size = get_size(format, &i);
-			++i;
-			printed = handle_print(format, &i, list, buffer,
-				flags, width, precision, size);
-			if (printed == -1)
-				return (-1);
-			printed_chars += printed;
-		}
-	}
-
-	print_buffer(buffer, &buff_ind);
-
-	va_end(list);
-
-	return (printed_chars);
+	return (result);
 }
 
 /**
- * print_buffer - Prints the contents of the buffer if it exist
- * @buffer: Array of chars
- * @buff_ind: Index at which to add next char, represents the length.
+ * _printfsub - handles various format specifiers
+ * @format: first argument return by _printf
+ * @va: other arguments returned by _printf
+ * Return: 1 if no error occured
  */
-void print_buffer(char buffer[], int *buff_ind)
-{
-	if (*buff_ind > 0)
-		write(1, &buffer[0], *buff_ind);
 
-	*buff_ind = 0;
+int _printfsub(const char *format, va_list va)
+{
+	while (*format)
+	{
+		if (*format != '%')
+		{
+			_putchar(*format);
+			format++;
+			continue;
+		}
+		else
+		{
+			format++;
+		}
+
+		switch (*format)
+		{
+			case 'c':
+				{
+					char character = (char)va_arg(va, int);
+
+					if (character)
+						_putchar(character);
+					format++;
+					break;
+				}
+			case 's':
+				{
+					char *str = va_arg(va, char*);
+
+					handle_string_printing(str);
+					format++;
+					break;
+				}
+			default:
+				_putchar(*format);
+				format++;
+				break;
+		}
+	}
+	return (0);
+}
+/**
+ * handle_string_printing - to print strings
+ * @str: an input string
+ * Return: nothing
+ */
+int handle_string_printing(char *str)
+{
+	int i = 0;
+
+	while (str[i] != '\0')
+		_putchar(str[i++]);
 }
