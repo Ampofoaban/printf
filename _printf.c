@@ -1,4 +1,5 @@
 #include "main.h"
+
 /**
  * _printf -  implements the printf function in c
  * @format: first argument return by _printf
@@ -8,47 +9,51 @@
 int _printf(const char *format, ...)
 {
 	va_list va;
+	char buffer[1];
 	int result;
 
 	va_start(va, format);
-	result = _printfsub(format, va);
-
+	result = _vprintf(handle_print, buffer, ((size_t)-1), format, va);
 	va_end(va);
 
 	return (result);
 }
 
 /**
- * _printfsub - handles various format specifiers
- * @format: first argument return by _printf
+ * _vprintf - handles various format specifiers
+ * @fmt: first argument return by _printf
  * @va: other arguments returned by _printf
+ * @buf: a character buffer
+ * @ml: to store lengths
+ * @prnt: to print characters
  * Return: 1 if no error occured
  */
 
-int _printfsub(const char *format, va_list va)
+int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 {
-	while (*format)
+	size_t idx = 0U;
+
+	while (*fmt)
 	{
-		if (*format != '%')
+		if (*fmt != '%')
 		{
-			_putchar(*format);
-			format++;
+			_putchar(*fmt);
+			fmt++;
 			continue;
 		}
 		else
 		{
-			format++;
+			fmt++;
 		}
 
-		switch (*format)
+		switch (*fmt)
 		{
 			case 'c':
 				{
 					char character = (char)va_arg(va, int);
 
-					if (character)
-						_putchar(character);
-					format++;
+					prnt(character, buf, idx++, ml);
+					fmt++;
 					break;
 				}
 			case 's':
@@ -56,28 +61,14 @@ int _printfsub(const char *format, va_list va)
 					char *str = va_arg(va, char*);
 
 					handle_string_printing(str);
-					format++;
+					fmt++;
 					break;
 				}
 			default:
-				_putchar(*format);
-				format++;
+				_putchar(*fmt);
+				fmt++;
 				break;
 		}
 	}
-	return (0);
-}
-/**
- * handle_string_printing - to print strings
- * @str: an input string
- * Return: nothing
- */
-int handle_string_printing(char *str)
-{
-	int i = 0;
-
-	while (str[i] != '\0')
-		_putchar(str[i++]);
-
 	return (0);
 }

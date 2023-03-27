@@ -1,7 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 #include <stdarg.h>
-
+#include <stddef.h>
 
 /* FLAGS */
 #define F_MINUS 1
@@ -28,11 +28,13 @@
  * @fm_t: The function associated.
  */
 
+typedef void (*prnt_type)(char character, void *buffer, size_t idx, size_t maxlen);
+
 int _putchar(char c);
 int _printf(const char *format, ...);
-int handle_print(const char *fmt);
+void handle_print(char fmt, void * buffer, size_t idx, size_t maxlen);
 int handle_string_printing(char *str);
-int _printfsub(const char *format, va_list va);
+int _vprintf(prnt_type print, char *buffer, size_t maxlen, const char *format, va_list va);
 /****************** FUNCTIONS ******************/
 
 /* Funtions to print chars and strings */
