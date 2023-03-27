@@ -38,6 +38,6 @@ int _vprintf(prnt_type print, char *buffer, size_t maxlen, const char *format, v
 /****************** FUNCTIONS ******************/
 
 /* Funtions to print chars and strings */
-
+void h_c(prnt_type print, char * buffer, size_t maxlength, size_t idx, const char *format, va_list va);
 /* Functions to print numbers */
 #endif /* MAIN_H */

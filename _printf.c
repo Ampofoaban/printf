@@ -49,13 +49,8 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 		switch (*fmt)
 		{
 			case 'c':
-				{
-					char character = (char)va_arg(va, int);
-
-					prnt(character, buf, idx++, ml);
-					fmt++;
-					break;
-				}
+				h_c(prnt, buf, ml, idx, fmt, va);
+				break;
 			case 's':
 				{
 					char *str = va_arg(va, char*);

@@ -35,3 +35,21 @@ void handle_print(char character, void  *buffer, size_t idx, size_t maxlen)
 
 	}
 }
+
+/**
+ * h_c - handles character casese
+ * @pnt: print functio
+ * @b: a buffer
+ * @ml: max length
+ * @i: value for idx
+ * @f: value for format
+ * @v: value for va list
+ * Description - shortened
+ */
+void h_c(prnt_type pnt, char *b, size_t ml, size_t i, const char *f, va_list v)
+{
+	char c = (char)va_arg(v, int);
+
+	pnt(c, b, i, ml);
+	f++;
+}
