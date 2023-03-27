@@ -29,7 +29,7 @@
  */
 
 int _putchar(char c);
-int _printf(const char *format, va_list va);
+int _printf(const char *format, ...);
 int handle_print(const char *fmt);
 int handle_string_printing(char *str);
 int _printfsub(const char *format, va_list va);

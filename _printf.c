@@ -1,5 +1,4 @@
 #include "main.h"
-
 /**
  * _printf -  implements the printf function in c
  * @format: first argument return by _printf
@@ -9,9 +8,10 @@
 int _printf(const char *format, ...)
 {
 	va_list va;
+	int result;
 
 	va_start(va, format);
-	int result = _printfsub(format, va);
+	result = _printfsub(format, va);
 
 	va_end(va);
 
@@ -78,4 +78,6 @@ int handle_string_printing(char *str)
 
 	while (str[i] != '\0')
 		_putchar(str[i++]);
+
+	return (0);
 }
