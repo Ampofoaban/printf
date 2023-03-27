@@ -32,6 +32,7 @@ int _printf(const char *format, ...)
 int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 {
 	size_t idx = 0U;
+	unsigned int n;
 
 	while (*fmt)
 	{
@@ -45,6 +46,18 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 		{
 			fmt++;
 		}
+		do {
+			switch (*fmt)
+			{
+				case ' ':
+					fmt++;
+					n = 1U;
+					break;
+				default:
+					n = 0U;
+					break;
+			}
+		} while (n);
 		switch (*fmt)
 		{
 			case 'c':
