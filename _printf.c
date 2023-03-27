@@ -37,7 +37,7 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 	{
 		if (*fmt != '%')
 		{
-			_putchar(*fmt);
+			prnt(*fmt, buf, idx, ml);
 			fmt++;
 			continue;
 		}
@@ -45,20 +45,21 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 		{
 			fmt++;
 		}
-
 		switch (*fmt)
 		{
 			case 'c':
-				h_c(prnt, buf, ml, idx, fmt, va);
+			/*	h_c(prnt, buf, ml, idx, fmt, va);*/
+				prnt((char)va_arg(va, int), buf, idx++, ml);
+				fmt++;
 				break;
 			case 's':
-				{
-					char *str = va_arg(va, char*);
-
-					handle_string_printing(str);
-					fmt++;
-					break;
-				}
+				handle_string_printing(va_arg(va, char*));
+				fmt++;
+				break;
+			case '%':
+				prnt('%', buf, idx++, ml);
+				fmt++;
+				break;
 			default:
 				_putchar(*fmt);
 				fmt++;
