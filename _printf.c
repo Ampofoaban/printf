@@ -53,6 +53,22 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 					fmt++;
 					n = 1U;
 					break;
+				case '+':
+					fmt++;
+					n = 1U;
+					break;
+				case '-':
+					fmt++;
+					n = 1U;
+					break;
+				case '0':
+					fmt++;
+					n = 1U;
+					break;
+				case '#':
+					fmt++;
+					n = 1U;
+					break;
 				default:
 					n = 0U;
 					break;
