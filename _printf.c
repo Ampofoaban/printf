@@ -89,16 +89,6 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 		}
 		else if (*fmt == '*')
 		{
-			const int w = va_arg(va, int);	
-			if (w < 0)
-			{
-				flags |= FLAGS_LEFT;
-				width = (unsigned int)-w;
-			}
-			else
-			{
-				width = (unsigned int)w;
-			}
 			fmt++;
 		}
 
@@ -114,7 +104,6 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 			else if (*fmt == '*')
 			{
 				const int prec = (int)va_arg(va, int);
-
 				precision = prec > 0 ? (unsigned int)prec : 0U;
 				fmt++;
 			}
@@ -149,6 +138,7 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 				{
 					const char *p = va_arg(va, char*);
 					unsigned int l = _strnlen_s(p, precision ? precision : (size_t)-1);
+					 printf("came hereand crashed %c\n", *fmt);
 					if (flags & FLAGS_PRECISION)
 					{
 						l = (l < precision ? l : precision);
