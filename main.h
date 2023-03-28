@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 /* FLAGS */
 #define FLAGS_ZEROPAD (1U << 0U)

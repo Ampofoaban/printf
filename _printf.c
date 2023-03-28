@@ -38,7 +38,7 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 	{
 		if (*fmt != '%')
 		{
-			prnt(*fmt, buf, idx, ml);
+			prnt(*fmt, buf, idx++, ml);
 			fmt++;
 			continue;
 		}
@@ -89,8 +89,7 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 		}
 		else if (*fmt == '*')
 		{
-			const int w = va_arg(va, int);
-
+			const int w = va_arg(va, int);	
 			if (w < 0)
 			{
 				flags |= FLAGS_LEFT;
@@ -181,11 +180,11 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 				fmt++;
 				break;
 			default:
-				_putchar(*fmt);
+				prnt(*fmt, buf, idx++, ml);
 				fmt++;
 				break;
 		}
 	}
 	prnt((char)0, buf, idx < ml ? idx : ml - 1U, ml);
-	return (0);
+	return ((int)idx);
 }
