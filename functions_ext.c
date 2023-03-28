@@ -171,3 +171,41 @@ size_t _ntoa_long(prnt_type p, char *buf, size_t idx, size_t ml, unsigned long v
 
 	return (_ntoa_format(p, buf, idx, ml, bf, len, neg, (unsigned int)base, prec, width, flags));
 }
+#if defined(PRINTF_SUPPORT_LONG_LONG)
+/**
+ * _ntoa_long_long - format long long numbers
+ * @p: print type
+ * @buff: buffer for characters
+ * @idx: index value
+ * @ml: maximum length
+ * @value: parsed value
+ * @neg: boolean for negatvies
+ * @base: number base
+ * @prec: hancle precision
+ * @width: width of input
+ * @flags: flags for formatting
+ * Return: formatted long long numbers
+ */
+size_t _ntoa_long_long(prnt_type p, char *buff, size_t idx, size_t ml, unsigned long long value, bool neg, unsigned long long base, unsigned int prec, unsigned int width, unsigned int flags)
+{
+	char buf[PRINTF_NTOA_BUFFER_SIZE];
+	size_t len = 0U;
+
+	if (!value)
+	{
+		flags &= ~FLAGS_HASH;
+	}
+
+	if (!(flags & FLAGS_PRECISION) || value)
+	{
+		do {
+			const char digit = (char)(value % base);
+
+			buf[len++] = digit < 10 ? '0' + digit : (flags & FLAGS_UPPERCASE ? 'A' : 'a') + digit - 10;
+			value /= base;
+		} while (value && (len < PRINTF_NTOA_BUFFER_SIZE));
+	}
+	return (_ntoa_format(p, buff, idx, ml, buf, len, neg, (unsigned int)base, prec, width, flags));
+}
+#endif
+
