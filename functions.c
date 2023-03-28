@@ -53,3 +53,27 @@ void h_c(prnt_type pnt, char *b, size_t ml, size_t i, const char *f, va_list v)
 	pnt(c, b, i, ml);
 	f++;
 }
+
+/**
+ * _is_digit - checks if a character is a valid digit
+ * @ch: input character
+ * Return:  a bool
+ */
+bool _is_digit(char ch)
+{
+	return ((ch >= '0') && (ch <= '9'));
+}
+
+/**
+ * _atoi - string to usigned int conversion
+ * @str: input string to be converted
+ * Return: an unsigned integer
+ */
+unsigned int _atoi(const char **str)
+{
+	unsigned int i = 0U;
+
+	while (_is_digit(**str))
+		i = i * 10U + (unsigned int)(*((*str)++) - '0');
+	return (i);
+}

@@ -32,7 +32,7 @@ int _printf(const char *format, ...)
 int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 {
 	size_t idx = 0U;
-	unsigned int n;
+	unsigned int n, width, precision, flags;
 
 	while (*fmt)
 	{
@@ -46,26 +46,33 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 		{
 			fmt++;
 		}
+
+		flags = 0U;
 		do {
 			switch (*fmt)
 			{
 				case ' ':
+					flags |= FLAGS_SPACE;
 					fmt++;
 					n = 1U;
 					break;
 				case '+':
+					flags |= FLAGS_PLUS;
 					fmt++;
 					n = 1U;
 					break;
 				case '-':
+					flags |= FLAGS_LEFT;
 					fmt++;
 					n = 1U;
 					break;
 				case '0':
+					flags |= FLAGS_ZEROPAD;
 					fmt++;
 					n = 1U;
 					break;
 				case '#':
+					flags |= FLAGS_HASH;
 					fmt++;
 					n = 1U;
 					break;
@@ -74,17 +81,101 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 					break;
 			}
 		} while (n);
+
+		width = 0U;
+		if (_is_digit(*fmt))
+		{
+			width = _atoi(&fmt);
+		}
+		else if (*fmt == '*')
+		{
+			const int w = va_arg(va, int);
+
+			if (w < 0)
+			{
+				flags |= FLAGS_LEFT;
+				width = (unsigned int)-w;
+			}
+			else
+			{
+				width = (unsigned int)w;
+			}
+			fmt++;
+		}
+
+		precision = 0U;
+		if (*fmt == '.')
+		{
+			flags |= FLAGS_PRECISION;
+			fmt++;
+			if (_is_digit(*fmt))
+			{
+				precision = _atoi(&fmt);
+			}
+			else if (*fmt == '*')
+			{
+				const int prec = (int)va_arg(va, int);
+
+				precision = prec > 0 ? (unsigned int)prec : 0U;
+				fmt++;
+			}
+		}
 		switch (*fmt)
 		{
 			case 'c':
-			/*	h_c(prnt, buf, ml, idx, fmt, va);*/
-				prnt((char)va_arg(va, int), buf, idx++, ml);
-				fmt++;
-				break;
+				{
+					unsigned int l = 1U;
+
+					if (!(flags & FLAGS_LEFT))
+					{
+						while (l++ < width)
+						{
+							prnt(' ', buf, idx++, ml);
+						}
+					}
+					/*h_c(prnt, buf, ml, idx, fmt, va);*/
+					prnt((char)va_arg(va, int), buf, idx++, ml);
+
+					if (flags & FLAGS_LEFT)
+					{
+						while (l++ < width)
+						{
+							prnt(' ', buf, idx++, ml);
+						}
+					}
+					fmt++;
+					break;
+				}
 			case 's':
-				handle_string_printing(va_arg(va, char*));
-				fmt++;
-				break;
+				{
+					const char *p = va_arg(va, char*);
+					unsigned int l = _strnlen_s(p, precision ? precision : (size_t)-1);
+					if (flags & FLAGS_PRECISION)
+					{
+						l = (l < precision ? l : precision);
+					}
+					if (!(flags & FLAGS_LEFT))
+					{
+						while (l++ < width)
+						{
+							prnt(' ', buf, idx++, ml);
+						}
+					}
+
+					while ((*p != 0) && (!(flags & FLAGS_PRECISION) || precision--))
+					{
+						prnt(*(p++), buf, idx++, ml);
+					}
+					if (flags & FLAGS_LEFT)
+					{
+						while (l++ < width)
+						{
+							prnt(' ', buf, idx++, ml);
+						}
+					}
+					fmt++;
+					break;
+				}
 			case '%':
 				prnt('%', buf, idx++, ml);
 				fmt++;
@@ -95,5 +186,6 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 				break;
 		}
 	}
+	prnt((char)0, buf, idx < ml ? idx : ml - 1U, ml);
 	return (0);
 }
