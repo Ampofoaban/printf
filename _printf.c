@@ -13,7 +13,7 @@ int _printf(const char *format, ...)
 	int result;
 
 	va_start(va, format);
-	result = _vprintf(handle_print, buffer, ((size_t)-1), format, va);
+	result = _vprintf(print_fct, buffer, ((size_t)-1), format, va);
 	va_end(va);
 
 	return (result);

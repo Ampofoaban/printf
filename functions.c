@@ -8,10 +8,11 @@
  * @ml: maxlength
  * Return: nothing
  */
-int print_fct(char c, void *buf, size_t idx, size_t ml)
+void print_fct(char c, void *buf, size_t idx, size_t ml)
 {
 	(void)idx;
 	(void)ml;
+	(void)buf;
 	if (c)
 	{
 		_putchar(c);

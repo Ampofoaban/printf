@@ -30,12 +30,12 @@ unsigned int _strnlen_s(const char *str, size_t maxsize)
  */
 size_t print_rev(prnt_type print, char *buffer, size_t idx, size_t ml, const char *buf, size_t len, unsigned int width, unsigned int flags)
 {
-	const size_t i;
+	size_t i;
 	const size_t start_idx = idx;
 
 	if (!(flags & FLAGS_LEFT) && !(flags & FLAGS_ZEROPAD))
 	{
-		for (i = len; i width; i++)
+		for (i = len; i < width; i++)
 		{
 			print(' ', buffer, idx++, ml);
 		}
@@ -48,7 +48,7 @@ size_t print_rev(prnt_type print, char *buffer, size_t idx, size_t ml, const cha
 
 	if (flags & FLAGS_LEFT)
 	{
-		while (idx - star_idx < width)
+		while (idx - start_idx < width)
 		{
 			print(' ', buffer, idx++, ml);
 		}
@@ -99,11 +99,11 @@ size_t _ntoa_format(prnt_type print, char *buf, size_t idx, size_t ml, char *bf,
 				len--;
 			}
 		}
-		if ((base == 16U) && !(flags & FLAGS_UPPERCASE) && (len < PRINT_NTOA_BUFFER_SIZE))
+		if ((base == 16U) && !(flags & FLAGS_UPPERCASE) && (len < PRINTF_NTOA_BUFFER_SIZE))
 		{
 			bf[len++] = 'x';
 		}
-		else if ((base == 16U) && (flags & FLAGS_UPPERCASE) && (len < PRINT_NTOA_BUFFER_SIZE))
+		else if ((base == 16U) && (flags & FLAGS_UPPERCASE) && (len < PRINTF_NTOA_BUFFER_SIZE))
 		{
 			bf[len++] = 'X';
 		}
@@ -171,8 +171,9 @@ size_t _ntoa_long(prnt_type p, char *buf, size_t idx, size_t ml, unsigned long v
 
 	return (_ntoa_format(p, buf, idx, ml, bf, len, neg, (unsigned int)base, prec, width, flags));
 }
+/*
 #if defined(PRINTF_SUPPORT_LONG_LONG)
-/**
+
  * _ntoa_long_long - format long long numbers
  * @p: print type
  * @buff: buffer for characters
@@ -185,7 +186,7 @@ size_t _ntoa_long(prnt_type p, char *buf, size_t idx, size_t ml, unsigned long v
  * @width: width of input
  * @flags: flags for formatting
  * Return: formatted long long numbers
- */
+ *
 size_t _ntoa_long_long(prnt_type p, char *buff, size_t idx, size_t ml, unsigned long long value, bool neg, unsigned long long base, unsigned int prec, unsigned int width, unsigned int flags)
 {
 	char buf[PRINTF_NTOA_BUFFER_SIZE];
@@ -208,4 +209,4 @@ size_t _ntoa_long_long(prnt_type p, char *buff, size_t idx, size_t ml, unsigned 
 	return (_ntoa_format(p, buff, idx, ml, buf, len, neg, (unsigned int)base, prec, width, flags));
 }
 #endif
-
+*/

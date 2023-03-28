@@ -6,8 +6,6 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include "print.h"
-
 #ifdef PRINT_INCLUDE_CONFIG_H
 #include "printf_config.h"
 #endif
@@ -74,12 +72,12 @@ int sprintf_(char* buffer, const char* format, ...);
 #define FLAGS_ADAPT_EXP (1U << 11U)
 
 /* SIZES */
-// import float.h for DBL_MAX
+/* import float.h for DBL_MAX */
 #if defined(PRINTF_SUPPORT_FLOAT)
 #include <float.h>
 #endif
 
-// wrapper (used as buffer) for output function type
+/*  wrapper (used as buffer) for output function type */
 typedef struct {
   void  (*fct)(char character, void* arg);
   void* arg;
@@ -89,11 +87,14 @@ typedef struct {
 typedef void (*prnt_type)(char character, void *buffer, size_t idx, size_t maxlen);
 
 int _putchar(char c);
-void handle_print(char fmt, void * buffer, size_t idx, size_t maxlen);
-int handle_string_printing(char *str);
+size_t _ntoa_format(prnt_type print, char *buf, size_t idx, size_t ml, char *bf, size_t len, bool neg, unsigned int base, unsigned int prec, unsigned int width, unsigned int flags);
 bool _is_digit(char ch);
+size_t print_rev(prnt_type print, char *buffer, size_t idx, size_t ml, const char *buf, size_t len, unsigned int width, unsigned int flags);
+size_t _etoa(prnt_type p, char *buff, size_t idx, size_t ml, double value, unsigned int prec, unsigned int width, unsigned int flags);
 unsigned int _strnlen_s(const char* str, size_t maxsize);
+size_t _ntoa_long(prnt_type p, char *buf, size_t idx, size_t ml, unsigned long value, bool neg, unsigned long base, unsigned int prec, unsigned int width, unsigned int flags);
 unsigned int _atoi(const char **str);
+void print_fct(char c, void *buf, size_t idx, size_t ml);
 int _vprintf(prnt_type print, char *buffer, size_t maxlen, const char *format, va_list va);
 /****************** FUNCTIONS ******************/
 
