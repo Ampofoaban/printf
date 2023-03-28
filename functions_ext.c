@@ -134,3 +134,40 @@ size_t _ntoa_format(prnt_type print, char *buf, size_t idx, size_t ml, char *bf,
 	}
 	return (print_rev(print, buf, idx, ml, bf, len, width, flags));
 }
+
+/**
+ * _ntoa_long - handle long numbers
+ * @p: print function
+ * @buf: buffer
+ * @idx: index
+ * @ml: maximum length
+ * @value: parsed value
+ * @neg: boolean for negatives
+ * @base: number base
+ * @prec: precision
+ * @width: width of parameters
+ * @flags: added flags
+ * Return: formatted long numbers
+ */
+size_t _ntoa_long(prnt_type p, char *buf, size_t idx, size_t ml, unsigned long value, bool neg, unsigned long base, unsigned int prec, unsigned int width, unsigned int flags)
+{
+	char bf[PRINTF_NTOA_BUFFER_SIZE];
+	size_t len = 0U;
+
+	if (!value)
+	{
+		flags &= ~FLAGS_HASH;
+	}
+
+	if (!(flags & FLAGS_PRECISION) || value)
+	{
+		do {
+			const char digit = (char)(value % base);
+
+			bf[len++] = digit < 10 ? '0' + digit : (flags & FLAGS_UPPERCASE ? 'A' : 'a') + digit - 10;
+			value /= base;
+		} while (value && (len < PRINTF_NTOA_BUFFER_SIZE));
+	}
+
+	return (_ntoa_format(p, buf, idx, ml, bf, len, neg, (unsigned int)base, prec, width, flags));
+}
