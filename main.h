@@ -95,6 +95,10 @@ unsigned int _strnlen_s(const char* str, size_t maxsize);
 size_t _ntoa_long(prnt_type p, char *buf, size_t idx, size_t ml, unsigned long value, bool neg, unsigned long base, unsigned int prec, unsigned int width, unsigned int flags);
 unsigned int _atoi(const char **str);
 void print_fct(char c, void *buf, size_t idx, size_t ml);
+void print_null(char c, void *buffer, size_t idx, size_t ml);
+
+size_t _ftoa(prnt_type p, char *buff, size_t idx, size_t ml, double value, unsigned int prec, unsigned int width, unsigned int flags);
+	
 int _vprintf(prnt_type print, char *buffer, size_t maxlen, const char *format, va_list va);
 /****************** FUNCTIONS ******************/
 
