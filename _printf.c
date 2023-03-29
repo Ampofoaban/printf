@@ -333,6 +333,15 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 					fmt++;
 					break;
 				}
+			case 'r':
+				{
+					const char *p = va_arg(va, char*);
+					unsigned int l = _strnlen_s(p, precision ? precision : (size_t)-1);
+					print_rev(prnt, buf, idx, ml, p, l, width, flags);
+					fmt++;
+					break;
+				}
+
 			case 'p':
 				{
 					width = sizeof(void *) * 2U;
