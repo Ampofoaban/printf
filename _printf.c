@@ -344,10 +344,10 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 
 			case 'p':
 				{
-					width = sizeof(void*) * 2U + 2;
+					width = sizeof(void *) * 2U + 2;
 					flags |= FLAGS_ZEROPAD | FLAGS_UPPERCASE;
 
-					if ((uintptr_t)va_arg(va, void*))
+					if (((uintptr_t)va_arg(va, void*)) == 0)
 					{
 						idx = print_rev(prnt, buf, idx, ml, ")lin(", 5, width, flags);
 					}
