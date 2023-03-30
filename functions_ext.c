@@ -14,7 +14,7 @@ size_t print_pad(prnt_type prnt, char *buf, size_t idx, size_t ml, char padchar,
 {
 	while (c-- > 0)
 	{
-		prnt(padchar, buf, idx++, maxlen);
+		prnt(padchar, buf, idx++, ml);
 	}
 	return (idx);
 }
@@ -49,7 +49,7 @@ unsigned int _strnlen_s(const char *str, size_t maxsize)
  */
 size_t print_rev(prnt_type print, char *buffer, size_t idx, size_t ml, const char *buf, size_t len, unsigned int width, unsigned int flags)
 {
-	size_t i;
+
 	const int pad = width - len;
 
 	if (!(flags & FLAGS_LEFT) && !(flags & FLAGS_ZEROPAD))
@@ -64,7 +64,7 @@ size_t print_rev(prnt_type print, char *buffer, size_t idx, size_t ml, const cha
 
 	if (flags & FLAGS_LEFT)
 	{
-		idx = print_pad(prnt, buffer, idx, ml, ' ', pad);
+		idx = print_pad(print, buffer, idx, ml, ' ', pad);
 	}
 	return (idx);
 }
