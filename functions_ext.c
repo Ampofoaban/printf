@@ -1,6 +1,25 @@
 #include "main.h"
 
 /**
+ * print_pad - handle padding of strings
+ * @prnt: print function
+ * @buf: buffer val
+ * @idx: index
+ * @ml: maximum length
+ * @padchar: char to pad
+ * @c: count value
+ * Return: idx value
+ */
+size_t print_pad(prnt_type prnt, char *buf, size_t idx, size_t ml, char padchar, int c)
+{
+	while (c-- > 0)
+	{
+		prnt(padchar, buf, idx++, maxlen);
+	}
+	return (idx);
+}
+
+/**
  * _strnlen_s - computes the lenght of string
  * @str: input str
  * @maxsize: input size
@@ -31,14 +50,11 @@ unsigned int _strnlen_s(const char *str, size_t maxsize)
 size_t print_rev(prnt_type print, char *buffer, size_t idx, size_t ml, const char *buf, size_t len, unsigned int width, unsigned int flags)
 {
 	size_t i;
-	const size_t start_idx = idx;
+	const int pad = width - len;
 
 	if (!(flags & FLAGS_LEFT) && !(flags & FLAGS_ZEROPAD))
 	{
-		for (i = len; i < width; i++)
-		{
-			print(' ', buffer, idx++, ml);
-		}
+		idx = print_pad(print, buffer, idx, ml, ' ', pad);
 	}
 
 	while (len)
@@ -48,10 +64,7 @@ size_t print_rev(prnt_type print, char *buffer, size_t idx, size_t ml, const cha
 
 	if (flags & FLAGS_LEFT)
 	{
-		while (idx - start_idx < width)
-		{
-			print(' ', buffer, idx++, ml);
-		}
+		idx = print_pad(prnt, buffer, idx, ml, ' ', pad);
 	}
 	return (idx);
 }
