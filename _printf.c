@@ -121,7 +121,7 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 			else if (*fmt == '*')
 			{
 				const int prec = (int)va_arg(va, int);
-				
+
 				precision = prec > 0 ? (unsigned int)prec : 0U;
 				fmt++;
 			}
@@ -266,11 +266,11 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 			case 'E':
 			case 'g':
 			case 'G':
-				if ((*fmt == 'g')||(*fmt == 'G'))
+				if ((*fmt == 'g') || (*fmt == 'G'))
 				{
 					flags |= FLAGS_ADAPT_EXP;
 				}
-				if ((*fmt == 'E')||(*fmt == 'G'))
+				if ((*fmt == 'E') || (*fmt == 'G'))
 				{
 					flags |= FLAGS_UPPERCASE;
 				}
@@ -344,21 +344,29 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 
 			case 'p':
 				{
-					width = sizeof(void*) * 2U;
+					width = sizeof(void*) * 2U + 2;
 					flags |= FLAGS_ZEROPAD | FLAGS_UPPERCASE;
-#if defined(PRINTF_SUPPORT_LONG_LONG)
-					is_ll = sizeof(uintptr_t) == sizeof(long);
-					if(is_ll)
+
+					if ((uintptr_t)va_arg(va, void*))
 					{
-						idx = _ntoa_long(prnt, buf, idx, ml, (uintptr_t)va_arg(va, void*), false, 16U, precision, width, flags);
+						idx = print_rev(prnt, buf, idx, ml, ")lin(", 5, width, flags);
 					}
 					else
 					{
-#endif
-						idx = _ntoa_long(prnt, buf, idx, ml, (unsigned long)((uintptr_t)va_arg(va, void*)), false, 16U, precision, width, flags);
 #if defined(PRINTF_SUPPORT_LONG_LONG)
-					}
+						is_ll = sizeof(uintptr_t) == sizeof(long);
+						if (is_ll)
+						{
+							idx = _ntoa_long(prnt, buf, idx, ml, (uintptr_t)va_arg(va, void*), false, 16U, precision, width, flags);
+						}
+						else
+						{
 #endif
+							idx = _ntoa_long(prnt, buf, idx, ml, (unsigned long)((uintptr_t)va_arg(va, void*)), false, 16U, precision, width, flags);
+#if defined(PRINTF_SUPPORT_LONG_LONG)
+						}
+#endif
+					}
 					fmt++;
 					break;
 				}
