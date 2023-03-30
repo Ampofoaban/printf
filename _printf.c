@@ -344,7 +344,7 @@ int _vprintf(prnt_type prnt, char *buf, size_t ml, const char *fmt, va_list va)
 
 			case 'p':
 				{
-					width = sizeof(void *) * 2U;
+					width = sizeof(void*) * 2U;
 					flags |= FLAGS_ZEROPAD | FLAGS_UPPERCASE;
 #if defined(PRINTF_SUPPORT_LONG_LONG)
 					is_ll = sizeof(uintptr_t) == sizeof(long);
